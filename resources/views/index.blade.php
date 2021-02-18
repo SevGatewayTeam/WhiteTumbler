@@ -52,7 +52,9 @@
                         <div v-for="(meeting, index) in activeRoom.meetings">
                             <div class="p-2 d-flex align-items-center justify-content-between">
                                 <div class="d-flex align-items-center">
-                                    <div class="spinner-grow spinner-grow-sm" role="status">
+                                    <div 
+                                        v-if="compareDate(meeting, meeting.activateAt, meeting.deactivateAt)" 
+                                        class="spinner-grow spinner-grow-sm text-danger" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
                                     <span class="ms-3">@{{ meeting.name }}</span>

@@ -81,6 +81,15 @@ Vue.component('w-rooms', {
             }).then(() => {
                 this.newMeetingProcessing = false
             })
+        },
+        compareDate(meetingActivateDateStr){
+            console.log(meetingActivateDateStr)
+            let now = new Date(),
+                meetingActivateDate = new Date(meetingActivateDateStr)
+            console.log('now = ' + now)
+            console.log('meeting data = ' + meetingActivateDate)
+            console.log(meetingActivateDate.getTime() === now.getTime())
+            return true
         }
     }
 })

@@ -16,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use DateTime;
 
 class MeetingsController extends Controller
 {
@@ -42,9 +43,12 @@ class MeetingsController extends Controller
         $repository = $em->getRepository(Room::class);
         $room = $repository->find($request->roomId);
 
+        $date = new DateTime();
+
         $meeting = new Meeting();
         $meeting->setRoom($room);
         $meeting->setName($request->name);
+        $meeting->setActivateAt($date);
         $em->persist($meeting);
         $em->flush();
 
@@ -79,6 +83,39 @@ class MeetingsController extends Controller
         $url = $bbb->getJoinMeetingURL($joinMeetingParams);
 
         return redirect($url);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @Post("/meetings/sheduled")
+     */
+    public function newShcheduledMeeting(Request $request, EntityManagerInterface $em) {
+        $validator = Validator::make($request->all(), [
+            'roomId' => 'required|exists:App\Room,id',
+            'name' => 'required|min:1|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return new JsonResponse([
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $repository = $em->getRepository(Room::class);
+        $room = $repository->find($request->roomId);
+
+        $meeting = new Meeting();
+        $meeting->setRoom($room);
+        $meeting->setName($request->name);
+        $meeting->setActivateAt(new DateTime($request->activationDate));
+        $meeting->setDeactivateAt(new DateTime($request->deactivationDate));
+        $em->persist($meeting);
+        $em->flush();
+
+        return new JsonResponse($meeting);
     }
 
 }
