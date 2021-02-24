@@ -102,8 +102,14 @@ Vue.component('w-rooms', {
                     meeting.isActive = (now.getTime() >= meetingActivateDate.getTime())
                 }
             });
+            
+            meetings.sort(function(a, b){
+                return new Date(a.activateAt.date) - new Date(b.activateAt.date)
+            })
+            
             return meetings
         }
+
     }
 })
 

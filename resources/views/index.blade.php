@@ -58,6 +58,7 @@
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
                                     <span class="ms-3">@{{ meeting.name }}</span>
+                                    <span class="ms-3">@{{ new Date(meeting.activateAt['date']) }}</span>
                                 </div>
                                 <div v-if="meeting.isActive == 0">
                                     <a :href="`/meetings/${meeting.id}/wait`" class="btn p-2 lh-1 rounded-circle bg-blue-50 bg-blue-400-hover">
