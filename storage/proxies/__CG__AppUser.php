@@ -66,10 +66,10 @@ class User extends \App\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'rememberToken', 'name', 'rooms'];
+            return ['__isInitialized__', 'id', 'rememberToken', 'name', 'family_name', 'rooms'];
         }
 
-        return ['__isInitialized__', 'id', 'rememberToken', 'name', 'rooms'];
+        return ['__isInitialized__', 'id', 'rememberToken', 'name', 'family_name', 'rooms'];
     }
 
     /**
@@ -299,6 +299,50 @@ class User extends \App\User implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', [$name]);
 
         parent::setName($name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFamilyName(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFamilyName', []);
+
+        return parent::getFamilyName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFamilyName(string $family_name): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFamilyName', [$family_name]);
+
+        parent::setFamilyName($family_name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFullName(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFullName', []);
+
+        return parent::getFullName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAbbreviatedFullName(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAbbreviatedFullName', []);
+
+        return parent::getAbbreviatedFullName();
     }
 
 }
