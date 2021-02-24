@@ -25,8 +25,7 @@ class MeetingsController extends Controller
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return JsonResponse
-     * @Post("/meetings", middleware="web")
-     * @Middleware("auth")
+     * @Post("/meetings")
      */
     public function newMeeting(Request $request, EntityManagerInterface $em) {
         $validator = Validator::make($request->all(), [
@@ -43,12 +42,11 @@ class MeetingsController extends Controller
         $repository = $em->getRepository(Room::class);
         $room = $repository->find($request->roomId);
 
-        $date = new DateTime();
-
         $meeting = new Meeting();
         $meeting->setRoom($room);
         $meeting->setName($request->name);
-        $meeting->setActivateAt($date);
+        $meeting->setActivateAt(isset($request->activationDate) ? new DateTime($request->activationDate) : new DateTime());
+        $meeting->setDeactivateAt(isset($request->deactivationDate) ? new DateTime($request->deactivationDate) : null);
         $em->persist($meeting);
         $em->flush();
 
@@ -87,35 +85,14 @@ class MeetingsController extends Controller
 
 
     /**
-     * @param Request $request
+     * @param $meetingId
      * @param EntityManagerInterface $em
-     * @return JsonResponse
-     * @Post("/meetings/sheduled")
+     * @return mixed
+     * @Get("/meetings/{meetingId}/wait", middleware="web", as="wait_meeting")
+     * @Middleware("auth")
      */
-    public function newShcheduledMeeting(Request $request, EntityManagerInterface $em) {
-        $validator = Validator::make($request->all(), [
-            'roomId' => 'required|exists:App\Room,id',
-            'name' => 'required|min:1|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return new JsonResponse([
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        $repository = $em->getRepository(Room::class);
-        $room = $repository->find($request->roomId);
-
-        $meeting = new Meeting();
-        $meeting->setRoom($room);
-        $meeting->setName($request->name);
-        $meeting->setActivateAt(new DateTime($request->activationDate));
-        $meeting->setDeactivateAt(new DateTime($request->deactivationDate));
-        $em->persist($meeting);
-        $em->flush();
-
-        return new JsonResponse($meeting);
+    public function waitMeeting($meetingId, EntityManagerInterface $em) {
+        return view('waitMeeting');
     }
 
 }

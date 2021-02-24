@@ -106,7 +106,7 @@ class Meeting
     /**
      * @param \DateTime $deactivateAt
      */
-    public function setDeactivateAt(\DateTime $deactivateAt): void
+    public function setDeactivateAt(\DateTime $deactivateAt = null): void
     {
         $this->deactivateAt = $deactivateAt;
     }

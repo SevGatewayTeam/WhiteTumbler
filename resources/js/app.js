@@ -82,14 +82,27 @@ Vue.component('w-rooms', {
                 this.newMeetingProcessing = false
             })
         },
-        compareDate(meetingActivateDateStr){
-            console.log(meetingActivateDateStr)
-            let now = new Date(),
-                meetingActivateDate = new Date(meetingActivateDateStr)
-            console.log('now = ' + now)
-            console.log('meeting data = ' + meetingActivateDate)
-            console.log(meetingActivateDate.getTime() === now.getTime())
-            return true
+        checkMeetingActivation(meetings){
+            meetings.forEach(function(meeting, index){
+                let now = new Date(),
+                meetingActivateDate = new Date(meeting.activateAt.date)
+                if (meeting.deactivateAt !== null) {
+                    var meetingDeactivateDate = new Date(meeting.deactivateAt.date)
+                    if (now.getTime() >= meetingActivateDate.getTime()){
+                        if (now.getTime() < meetingDeactivateDate.getTime()){
+                            meeting.isActive = true
+                        }
+                        else {
+                            meeting.isActive = -1
+                        }
+                    }
+                    else {meeting.isActive = false}
+                }
+                else {
+                    meeting.isActive = (now.getTime() >= meetingActivateDate.getTime())
+                }
+            });
+            return meetings
         }
     }
 })

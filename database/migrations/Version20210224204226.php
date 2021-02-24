@@ -5,7 +5,7 @@ namespace Database\Migrations;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema as Schema;
 
-class Version20210217223038 extends AbstractMigration
+class Version20210224204226 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -14,7 +14,9 @@ class Version20210217223038 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE meetings ALTER deactivate_at DROP NOT NULL');
+        $this->addSql('CREATE TABLE roles (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('ALTER TABLE meetings ADD activate_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL');
+        $this->addSql('ALTER TABLE meetings ADD deactivate_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
     }
 
     /**
@@ -25,6 +27,8 @@ class Version20210217223038 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE meetings ALTER deactivate_at SET NOT NULL');
+        $this->addSql('DROP TABLE roles');
+        $this->addSql('ALTER TABLE meetings DROP activate_at');
+        $this->addSql('ALTER TABLE meetings DROP deactivate_at');
     }
 }

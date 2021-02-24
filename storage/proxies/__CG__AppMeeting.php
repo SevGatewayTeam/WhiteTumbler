@@ -36,6 +36,7 @@ class Meeting extends \App\Meeting implements \Doctrine\ORM\Proxy\Proxy
     public static $lazyPropertiesNames = array (
   'name' => NULL,
   'activateAt' => NULL,
+  'deactivateAt' => NULL,
 );
 
     /**
@@ -46,13 +47,14 @@ class Meeting extends \App\Meeting implements \Doctrine\ORM\Proxy\Proxy
     public static $lazyPropertiesDefaults = array (
   'name' => NULL,
   'activateAt' => NULL,
+  'deactivateAt' => NULL,
 );
 
 
 
     public function __construct(?\Closure $initializer = null, ?\Closure $cloner = null)
     {
-        unset($this->name, $this->activateAt);
+        unset($this->name, $this->activateAt, $this->deactivateAt);
 
         $this->__initializer__ = $initializer;
         $this->__cloner__      = $cloner;
@@ -114,7 +116,7 @@ class Meeting extends \App\Meeting implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'room', 'name', 'activateAt'];
+            return ['__isInitialized__', 'id', 'room', 'name', 'activateAt', 'deactivateAt'];
         }
 
         return ['__isInitialized__', 'id', 'room'];
@@ -139,7 +141,7 @@ class Meeting extends \App\Meeting implements \Doctrine\ORM\Proxy\Proxy
                 }
             };
 
-            unset($this->name, $this->activateAt);
+            unset($this->name, $this->activateAt, $this->deactivateAt);
         }
     }
 
@@ -289,6 +291,28 @@ class Meeting extends \App\Meeting implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setActivateAt', [$activateAt]);
 
         parent::setActivateAt($activateAt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDeactivateAt(): \DateTime
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDeactivateAt', []);
+
+        return parent::getDeactivateAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDeactivateAt(\DateTime $deactivateAt = NULL): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDeactivateAt', [$deactivateAt]);
+
+        parent::setDeactivateAt($deactivateAt);
     }
 
 }
