@@ -25,7 +25,8 @@ class MeetingsController extends Controller
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return JsonResponse
-     * @Post("/meetings")
+     * @Post("/meetings", middleware="web")	
+     * @Middleware("auth")
      */
     public function newMeeting(Request $request, EntityManagerInterface $em) {
         $validator = Validator::make($request->all(), [

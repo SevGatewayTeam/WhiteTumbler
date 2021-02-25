@@ -130,7 +130,7 @@
                     <div class="bg-white rounded-3">
                         <div class="d-flex align-items-center bg-blue-900 p-2 rounded-top-3">
                             <a @click="openRoom(index)"
-                                href="#meetings" class="p-0 fs-5 mb-0 ms-2 text-white text-wrap text-break text-start">
+                                href="#meetings" class="p-0 fs-5 mb-0 ms-2 text-white text-wrap text-break text-decoration-underline text-start">
                                 @{{ room.name }}
                             </a>
                         </div>
