@@ -49,8 +49,8 @@
                     </div>
                     <div class="modal-body">
 
-                        <div v-for="(meeting, index) in checkMeetingActivation(activeRoom.meetings)">
-                            <div class="p-2 d-flex align-items-center justify-content-between">
+                        <div v-for="(meeting, index) in meetings">
+                            <div v-if="meeting.isActive >= 0" class="p-2 d-flex align-items-center justify-content-between">
                                 <div class="d-flex align-items-center">
                                     <div 
                                         v-if="meeting.isActive > 0" 
@@ -58,7 +58,7 @@
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
                                     <span class="ms-3">@{{ meeting.name }}</span>
-                                    <span class="ms-3">@{{ new Date(meeting.activateAt['date']) }}</span>
+                                    <span class="ms-3">@{{ dateLocalization(meeting.activateAt['date']) }}</span>
                                 </div>
                                 <div v-if="meeting.isActive == 0">
                                     <a :href="`/meetings/${meeting.id}/wait`" class="btn p-2 lh-1 rounded-circle bg-blue-50 bg-blue-400-hover">
@@ -130,7 +130,7 @@
                     <div class="bg-white rounded-3">
                         <div class="d-flex align-items-center bg-blue-900 p-2 rounded-top-3">
                             <a @click="openRoom(index)"
-                                href="#meetings" class="p-0 fs-5 mb-0 ms-2 text-white text-wrap text-break text-decoration-underline text-start">
+                                href="#meetings" class="p-0 fs-5 mb-0 ms-2 text-white text-wrap text-break text-start">
                                 @{{ room.name }}
                             </a>
                         </div>

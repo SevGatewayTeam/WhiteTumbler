@@ -15,8 +15,8 @@ class Version20210224204226 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE TABLE roles (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('ALTER TABLE meetings ADD activate_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL');
-        $this->addSql('ALTER TABLE meetings ADD deactivate_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->addSql('ALTER TABLE meetings ADD activate_at TIMESTAMP(0) WITH TIME ZONE NOT NULL');
+        $this->addSql('ALTER TABLE meetings ADD deactivate_at TIMESTAMP(0) WITH TIME ZONE DEFAULT NULL');
     }
 
     /**

@@ -1,4 +1,5 @@
-SocialiteProviders\Manager\OAuth2\User {#447 ▼
+***Пример объекта юзера keycloak после авторизации:***
+```SocialiteProviders\Manager\OAuth2\User {#447 ▼
   +accessTokenResponseBody: array:8 [▼
     "access_token" => "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJFYzdJTkVlemhUSGRyUXJMb3hpUndNQWtBd1JuV0x3cU5uRThXbnNuelZJIn0.eyJleHAiOjE2MTQyMDIxMTQsImlhdCI6MTYxNDIwMTgxNCwi ▶"
     "expires_in" => 300
@@ -27,3 +28,5 @@ SocialiteProviders\Manager\OAuth2\User {#447 ▼
     "email" => "test@yandex.ru"
   ]
 }
+```
+---------------------------------

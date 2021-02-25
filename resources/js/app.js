@@ -2,6 +2,9 @@ import '../scss/app.scss'
 import 'bootstrap'
 import Vue from 'vue'
 import axios from 'axios'
+import jstz from 'jstz'
+import moment from 'moment'
+import moment_ from 'moment-timezone'
 
 const api = axios.create()
 api.defaults.withCredentials = true
@@ -13,6 +16,12 @@ Vue.component('w-rooms', {
         roomsInit: Array
     },
     data() {
+        if (!sessionStorage.getItem('timezone')) {
+            var tz = jstz.determine() || 'UTC';
+            sessionStorage.setItem('timezone', tz.name());
+        }
+        var currTz = sessionStorage.getItem('timezone');
+
         return {
             rooms: this.roomsInit,
             roomCreateProcessing: false,
@@ -25,6 +34,7 @@ Vue.component('w-rooms', {
             activeRoomIndex: null,
             newMeetingProcessing: false,
             meetingName: '',
+            currTz: currTz
         }
     },
     mounted() {
@@ -57,7 +67,8 @@ Vue.component('w-rooms', {
             this.activeRoom = this.rooms[roomIndex]
             this.activeRoomIndex = roomIndex
             $('#roomPage').modal('show')
-            console.log(this.activeRoom.name)
+            console.log('Room name: ' + this.activeRoom.name)
+            this.meetings = this.checkMeetingActivation (this.rooms[roomIndex].meetings)
         },
         addMeeting() {
             this.newMeetingProcessing = true
@@ -69,6 +80,7 @@ Vue.component('w-rooms', {
                     // this.errors = response.data.errors
                 } else {
                     this.activeRoom.meetings.push(response.data)
+                    this.meetings = this.checkMeetingActivation (this.activeRoom.meetings)
                     Vue.set(this.rooms, this.activeRoomIndex, this.activeRoom)
                     // this.errors = {}
                     this.meetingName = ''
@@ -108,8 +120,14 @@ Vue.component('w-rooms', {
             })
             
             return meetings
+        },
+        dateLocalization(meeting_date, output_format='DD.MM.YY HH:mm') {
+            var date = moment(meeting_date).format("YYYY-MM-DDTH:mm");
+            var momentTime = moment(date + "Z");
+            var tzTime = momentTime.tz(this.currTz);
+            var format_date = tzTime.format(output_format);
+            return format_date
         }
-
     }
 })
 
