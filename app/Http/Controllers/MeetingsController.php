@@ -65,8 +65,15 @@ class MeetingsController extends Controller
     public function join($meetingId, EntityManagerInterface $em) {
         $repository = $em->getRepository(Meeting::class);
         $meeting = $repository->find($meetingId);
-
         $user = Auth::user();
+
+        if ($meeting->activateAt > new DateTime()){
+            return view('waitMeeting');
+        }
+        
+        if ($meeting->deactivateAt < new DateTime()){
+            return view('expiredMeeting');
+        }        
 
         $moderator = $meeting->getRoom()->getCreator()->getId() == $user->getId();
 
@@ -82,18 +89,6 @@ class MeetingsController extends Controller
         $url = $bbb->getJoinMeetingURL($joinMeetingParams);
 
         return redirect($url);
-    }
-
-
-    /**
-     * @param $meetingId
-     * @param EntityManagerInterface $em
-     * @return mixed
-     * @Get("/meetings/{meetingId}/wait", middleware="web", as="wait_meeting")
-     * @Middleware("auth")
-     */
-    public function waitMeeting($meetingId, EntityManagerInterface $em) {
-        return view('waitMeeting');
     }
 
 }
